@@ -11,7 +11,7 @@ public class UserResource {
 
     @GetMapping("/home")
     public String  showUser() {
-        return "application working ";
+        return "application working";
     }
 
 

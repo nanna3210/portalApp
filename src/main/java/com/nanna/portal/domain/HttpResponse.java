@@ -2,12 +2,12 @@ package com.nanna.portal.domain;
 
 import org.springframework.http.HttpStatus;
 
-//import org.springframework
+
 public class HttpResponse {
 
     
     private int HtpStatusCode;
-    //    private
+  
     private HttpStatus httpStatus;
     private String reason;
     private String message;
