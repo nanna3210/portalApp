@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Entity
 public class User implements Serializable {
+//    implementing serializable for storing data in data base
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
