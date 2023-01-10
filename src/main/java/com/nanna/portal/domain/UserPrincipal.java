@@ -21,8 +21,8 @@ public class UserPrincipal implements UserDetails {
     
     @Override
     public Collection < ? extends GrantedAuthority > getAuthorities ( ) {
-//        simplegrantedauthority is extending granted authority
-//        mapping strings array  new simplefrantedauthority object
+//        SimpleGrantedAuthority is extending granted authority
+//        mapping strings array  new simpleGrantedAuthority object
 //        converting them to collection
         return stream(this.user.getAuthorities ()).map ( SimpleGrantedAuthority::new ).collect( Collectors.toList ());
     
