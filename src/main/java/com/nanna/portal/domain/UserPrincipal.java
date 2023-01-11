@@ -11,7 +11,8 @@ import java.util.stream.Stream;
 import static java.util.Arrays.stream;
 
 public class UserPrincipal implements UserDetails {
-    
+
+//    implementing UserDetails spring security
     private User user;
     
     
@@ -27,7 +28,7 @@ public class UserPrincipal implements UserDetails {
         return stream(this.user.getAuthorities ()).map ( SimpleGrantedAuthority::new ).collect( Collectors.toList ());
     
     }
-    
+//    getter and setter method
     @Override
     public String getPassword ( ) {
         return this.user.getPassword ();
