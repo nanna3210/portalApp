@@ -15,7 +15,7 @@ public class UserPrincipal implements UserDetails {
 //    implementing UserDetails spring security
     private User user;
     
-    
+//    constructor and passing the entity there
     public UserPrincipal ( User user ) {
         this.user = user;
     }
