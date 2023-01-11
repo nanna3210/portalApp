@@ -17,3 +17,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 #  rg.hibernate.dialect.MySQL8Dialect
+jwt:
+  secret: 'randomNumber03081990NannaDash'
