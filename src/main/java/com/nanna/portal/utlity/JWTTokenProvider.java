@@ -37,7 +37,7 @@ public class JWTTokenProvider {
     @Value ( "${jwt.secret}" )
     private String secret;
     
-    //    geerating jwt token
+    //    generating jwt token
     
     public String generateJwtToken ( UserPrincipal userPrincipal ) {
         String[] claims = getClaimsFromUser ( userPrincipal );
