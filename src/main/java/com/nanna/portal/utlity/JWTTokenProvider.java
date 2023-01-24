@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,11 +34,10 @@ import static java.util.Arrays.stream;
 public class JWTTokenProvider {
     
     
-    
     @Value ( "${jwt.secret}" )
     private String secret;
     
-//    geerating jwt token
+    //    geerating jwt token
     
     public String generateJwtToken ( UserPrincipal userPrincipal ) {
         String[] claims = getClaimsFromUser ( userPrincipal );
@@ -47,14 +47,14 @@ public class JWTTokenProvider {
     
     public List < GrantedAuthority > getAuthorities ( String token ) {
         String[] claims = getclaimsForToken ( token );
-        return stream ( claims ).map ( SimpleGrantedAuthority::new ).collect( Collectors.toList());
+        return stream ( claims ).map ( SimpleGrantedAuthority::new ).collect ( Collectors.toList () );
     }
     
     private String[] getclaimsForToken ( String token ) {
         JWTVerifier verifier = getJwtVerifier ();
         return verifier.verify ( token ).getClaim ( AUTHORITIES ).asArray ( String.class );
     }
-    
+//    get the jwt verifier
     private JWTVerifier getJwtVerifier ( ) {
         JWTVerifier verifier;
         try {
@@ -68,38 +68,68 @@ public class JWTTokenProvider {
     
         return verifier;
     }
-    public Authentication  getAuthentication(String username, List<GrantedAuthority> authorities,
-            HttpServletRequest request ){
     
+    public Authentication getAuthentication ( String username , List < GrantedAuthority > authorities , HttpServletRequest request ) {
+        
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken ( username , null , authorities );
         authenticationToken.setDetails ( new WebAuthenticationDetailsSource ().buildDetails ( request ) );
         return authenticationToken;
     }
     
-    public boolean isTokenvalid(String username , String token ){
+    public boolean isTokenvalid ( String username , String token ) {
         JWTVerifier verifier = getJwtVerifier ();
         return StringUtils.isNotEmpty ( username ) && IsTokenExpired ( verifier , token );
     }
     
     private boolean IsTokenExpired ( JWTVerifier verifier , String token ) {
         Date expiration = verifier.verify ( token ).getExpiresAt ();
+        //        return expiration.before ( new Date () );
+    
         return expiration.before ( new Date () );
+        
     }
     
-    public String  getSubject(String token ) {
+    
+    public String getSubject ( String token ) {
         JWTVerifier verifier = getJwtVerifier ();
         return verifier.verify ( token ).getSubject ();
+    
     }
     
     
     private String[] getClaimsFromUser ( UserPrincipal userPrincipal ) {
-        
+    
         List < String > authorities = new ArrayList <> ();
-        for ( GrantedAuthority grantedAuthority : userPrincipal.getAuthorities () ) {
-            authorities.add ( grantedAuthority.getAuthority () );
-        }
-        
-        return authorities.toArray ( new String[ 0 ] );
-        
+                for ( GrantedAuthority grantedAuthority : userPrincipal.getAuthorities () ) {
+                    authorities.add ( grantedAuthority.getAuthority () );
+                }
+
+                return authorities.toArray ( new String[ 0 ] );
     }
+    
+    
+    
+//    public String[] getauthourities(UserPrincipal userPrincipal) {
+//
+//        List<String> authoritiesar = new ArrayList();
+//        Collection < ? extends GrantedAuthority > authorities = userPrincipal.getAuthorities ();
+//        for ( GrantedAuthority authority :authorities ) {
+//            String stringAuthority = authority.getAuthority ();
+//            authoritiesar.add ( stringAuthority );
+//        }
+//
+//        return authoritiesar.toArray (new String[0]);
+//    }
+//
+//
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
