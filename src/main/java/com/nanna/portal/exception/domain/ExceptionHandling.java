@@ -5,6 +5,7 @@ import com.nanna.portal.domain.HttpResponse;
 import jakarta.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.util.ErrorHandler;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -23,7 +26,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @RestControllerAdvice
-public class ExceptionHandling {
+public class ExceptionHandling implements ErrorController {
     
     private              Logger logger                    = LoggerFactory.getLogger ( getClass () );
     private final static String ACCOUNT_LOCKED            = "YOUR ACCOUNT IS LOCKED PLEASE CONTACT ADMINISTRATOR";
@@ -34,7 +37,7 @@ public class ExceptionHandling {
     private final static String ACCOUNT_DISABLED      = " YOUR ACCOUNT HAS BEEN DISABLED IF THIS IS AN ERROR PLEASE CONTACT" + " ADMINISTRATOR";
     private final static String ERROR_PROCESSING_FILE = "ERROR OCCURRED WHILE PROCESSING FILE  ";
     private final static String NOT_ENOUGH_PERMISSION = "YOU DO NOT HAVE PERMISSION ";
-    
+    public static final  String ERROR_PATH="/error";
     
     @ExceptionHandler ( DisabledException.class )
     public ResponseEntity < HttpResponse > accountDisableException ( ) {
@@ -125,5 +128,15 @@ public class ExceptionHandling {
         
     }
     
+    @RequestMapping(ERROR_PATH)
+    public ResponseEntity<HttpResponse> notFound404() {
+        return createHttpResponse ( HttpStatus.NOT_FOUND , "no Mapping for this url " );
+    }
+    
+    
+    
+    public String getErrorPath() {
+        return ERROR_PATH;
+    }
     
 }
